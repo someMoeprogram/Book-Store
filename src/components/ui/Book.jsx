@@ -8,7 +8,7 @@ import Rating from "./Rating";
 const Book = ({book}) => {
   return (
     <div className="book">
-      <a href ="/books/1"> 
+      <a href ={`/books/${book.id}`}> 
         <figure className="book__img--wrapper">
           <img
             src={book.url}
@@ -18,7 +18,7 @@ const Book = ({book}) => {
         </figure>
       </a>
       <div className="book__title">
-        <a href ="/books/1" className="book__title--link">
+        <a href ={`/books/${book.id}`} className="book__title--link">
           {book.title}
         </a>
       </div>
