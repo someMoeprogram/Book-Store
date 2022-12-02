@@ -1,16 +1,27 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import Book from "../components/ui/Book";
 import Price from "../components/ui/Price";
 import Rating from "../components/ui/Rating";
+import Cart from "./Cart";
 // import Summary from "../components/ui/Summary";
 
 //Link to not working
-const BookInfo =( {books} ) => {
+const BookInfo =( {books, addToCart, cart} ) => {
     //useParams () allows to you to take ids and import them
     const {id} = useParams( );
-    const book = books.find(book => +book.id === +id);
-    console.log(book)
+    const book = books.find((book) => +book.id === +id);
+    // console.log(book)
+
+    function addBookToCart(book){
+        addToCart(book);
+    }
+
+    function bookExistsOnCart(){
+        return cart.find(book => book.id === +id);
+    }
+
     return (
         <div id="books__body">
             <main className="books__main">
@@ -48,9 +59,11 @@ const BookInfo =( {books} ) => {
                                     </p>
                                     {/* <Summary Summary={book.summary}/> */}
                                 </div>
-                                <button className="btn">
-                                    Add to Cart
-                                </button>
+                                {
+                                    bookExistsOnCart() ? (<button className="btn">Checkout</button> ):
+                                    (<button className="btn" onClick={()=> addBookToCart(book)}>Add to Cart</button>)
+                                }
+                                
                             </div>
                         </div>
                     </div>
@@ -62,6 +75,13 @@ const BookInfo =( {books} ) => {
                             <h2 className="book__selected__title--top">
                                 Recomanded Books
                             </h2>
+                        </div>
+                        <div className="books">
+                            {books
+                                .filter (book => book.rating === 5 && +book.id !=+id)
+                                .slice(0,4)
+                                .map(book => <Book book={book} key={book.id} />)
+                            }
                         </div>
                     </div>
                 </div>
